@@ -2,9 +2,9 @@ $(document).ready(function() {
 	$('.nav-tabs').button();
 	$('#btn-map').button('toggle');
 	$('#section-legend,#section-help').hide();
-	var BikeRacks = null;
+	var BusinessLicenses = null;
 	// The Google Maps base map layer
-	var Map = new TkMap({lat:42.01048,lng:-87.6652,domid:'map',init:true});
+	TkMap({lat:42.01048,lng:-87.6652,domid:'map',init:true});
 //Open checkbox listener
 	$("#btn-legend").click(function() {
 		$("#section-legend").slideDown();
@@ -22,30 +22,31 @@ $(document).ready(function() {
 		if ($("#chbx-bikeracks").is(':checked'))
 		{
 			$('#div-bikeracks').addClass('alert-success');
-			if (BikeRacks === null)
+			if (BusinessLicenses === null)
 			{
-				BikeRacks = new TkMapSqlFusionLayer
+				BusinessLicenses = new TkSocrataView
 				({
-					map : Map.Map,
-					tableid : '3815321',
-					lat : 'Latitude',
-					lng : 'Longitude',
-					datacols: 'Address,Ward,CommunityName',
-					where : "Ward = '49'",
-					iconurl : '/img/o.png'
+					tableid : 'b7mg-yyns',
+					domain : 'data.cityofchicago.org'
 				});
+				function delay()
+				{
+					var Data = BusinessLicenses.getData();
+					console.log(Data[1].legal_name);
+				}
+				setTimeout(delay, 3000);
 			}
 			else
 			{
-				BikeRacks.showLayer({});
+				//Buisnesses.showLayer({});
 			}
 		}
 		else
 		{
 			$('#div-bikeracks').removeClass('alert-success');
-			if (BikeRacks !== null)
+			if (BusinessLicenses !== null)
 			{
-				BikeRacks.hideLayer();
+				//Businesses.hideLayer();
 			}
 		}
 	});
